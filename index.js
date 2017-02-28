@@ -2,7 +2,7 @@
 
 const Webpack = require('webpack');
 const WebpackDevMiddleware = require('webpack-dev-middleware');
-
+const url = require('url')
 
 exports.register = (server, options, next) => {
 
@@ -15,8 +15,13 @@ exports.register = (server, options, next) => {
 
         const req = request.raw.req;
         const res = request.raw.res;
+        const nreq = options.indexMask && options.indexMask.test(req.url)
+            ? Object.assign(Object.create(req), {
+                url: url.resolve(config.output.publicPath || '', 'index.html')
+              })
+            : req;
 
-        middleware(req, res, (err) => {
+        middleware(nreq, res, (err) => {
 
             if (err) {
                 return reply(err);

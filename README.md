@@ -26,6 +26,7 @@ server.register(
     {
         register: require('hapi-webpack-dev-middleware'),
         options: {
+            indexMask: new RegExp('^/(request|services|register|login).*', 'g'),
             config: require('./webpack.config.js'),
             options: {
                 noInfo: true,
@@ -38,6 +39,7 @@ server.register(
 
 Configuration options:
 
+- ```indexMask```: Optional regexp. Replace matched pages to index.html, usefull for HTML5 history api.
 - ```config```: The Webpack config to use.
 - ```options```: The options you'd normally pass to ```webpack-dev-middleware```. Refer to their [documentation](https://github.com/webpack/webpack-dev-middleware) for all possible values.
 
